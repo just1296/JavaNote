@@ -1,2 +1,2 @@
 # JavaNote
-Java学习笔记
+[Java并发——Synchronized](Java并发——Synchronized.md)
