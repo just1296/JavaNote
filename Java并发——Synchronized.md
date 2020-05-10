@@ -61,12 +61,13 @@ class TestClass {
 - methodB()中synchronized(TestClass.class)作用于类，是给这个类加锁，类的所有对象用的是同一把锁。
 
 ## 3、原理
-### 3.1 synchronized修饰方法
-
-### 3.2 synchronized修饰代码块
+### 3.1 synchronized修饰代码块
 synchronized通过互斥来保证并发的正确性，synchronized经过编译后，会在同步代码块前后形成**monitorenter**和**monitorexit**这两个字节码。monitorenter指令指向同步代码块的开始位置，monitorexit指令指向同步代码块的结束位置。
 
 当执行monitorenter指令时，首先尝试获取对象的锁，如果当前对象没有被锁定，或者当前对象已经拥有对象锁，则把锁的计数器加1，在执行monitorexit时会将锁的计数器减1。当计数器为0时，锁会被释放。如果获取锁的对象失败，则当前线程就要阻塞等待，直到对象锁被另一个线程释放为止。
+
+### 3.2 synchronized修饰方法
+synchronized 修饰的方法并没有**monitorenter**指令和**monitorexit**指令，取得代之的确实是 `ACC_SYNCHRONIZED`标识，该标识指明了该方法是一个同步方法，JVM 通过该`ACC_SYNCHRONIZED`访问标志来辨别一个方法是否声明为同步方法，从而执行相应的同步调用。
 
 ## 4、Java对象头
 synchronized用的锁存在Java对象头中，如果对象是数组类型，则虚拟机用3个字宽（Word）存储对象头，如果对象是非数组类型，则用2字宽存储对象头。在32位虚拟机中，1字宽等于4字节，即32bit。
